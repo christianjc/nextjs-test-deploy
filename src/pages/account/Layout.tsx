@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
-const Layout = ({ children }) => {
+type Props = {
+    children: ReactNode
+}
+const Layout = ({ children }: Props) => {
     return (
         <>
             <h1>This is the layout</h1>
