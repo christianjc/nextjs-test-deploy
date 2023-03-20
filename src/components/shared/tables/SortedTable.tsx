@@ -14,9 +14,9 @@ import { visuallyHidden } from '@mui/utils'
 import { getComparator, stableSort, Order } from '../../../utils/utils'
 import { HeadCell } from '../../../interfaces/interfaces'
 import uuid from 'react-uuid'
-import { selectTaskById } from '../../../features/tasks/tasksApiSlice'
 import { EntityId, Dictionary } from '@reduxjs/toolkit'
 import { useSelector } from 'react-redux'
+import { selectShiftById } from '@/features/shift/shiftApiSlice'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
