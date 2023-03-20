@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
 import { User, House } from '../../types/schema'
 import { setCredentials, logOut } from './authSlice'
+import { FirebaseError } from "firebase/app";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -21,35 +22,28 @@ export const authApiSlice = apiSlice.injectEndpoints({
           console.log(userCredentials)
 
           if (!userCredentials) {
-            return { error: 'Wrong credentials' }
+            throw {error: userCredentials } 
           }
           return await establishUserContext(userCredentials.user.uid)
-          // const userID = userCredentials.user.uid
-          // const docRef = doc(firestore, 'users', userID)
-          // const docSnap = await getDoc(docRef)
-          // if (!docSnap.exists()) {
-          //   return { error: 'No user with those credentials in the database' }
-          // }
-          // const user = docSnap.data() as User
-          // user.id = docSnap.id.toString()
-          // if (!user.id) {
-          //   return { error: 'User does not have attribute --id-' }
-          // }
-          // const houseDocRef = doc(firestore, 'houses', user.houseID)
-          // const houseSnap = await getDoc(houseDocRef)
-
-          // if (!houseSnap.exists()) {
-          //   return { error: 'User not assigned to a valid house.' }
-          // }
-          // const house = houseSnap.data() as House
-          // return { data: { user, house } }
+          
         } catch (error) {
-          console.log('Error Logging In')
-          console.error(error)
-          return { error }
-        }
+          console.log('Error Logging In: ', error)
+          if (error instanceof FirebaseError) {
+            console.log('Firebase error:', error.code, error.message);
+            // throw new FirebaseError(error.code, error.message)
+            return {error:{code: error.code, message: error.message}};
+            
+          } else {
+            console.log('Unknown error:', error);
+            // throw new FirebaseError("Code 400", "Unknown error:")
+            return {error:"Unknown error"};
+          }
+
+          
+        } 
+
       },
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) { 
         try {
           const result = await queryFulfilled
           console.log('Query Fulfilled: ', result)
@@ -60,9 +54,11 @@ export const authApiSlice = apiSlice.injectEndpoints({
           const { user, house } = result.data
           dispatch(setCredentials({ user, house }))
           // return { data: arg }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch ({error}) {
+          console.log("Error: ",  error)
+          
+        } 
+        
       },
     }),
 

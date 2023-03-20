@@ -7,6 +7,8 @@ import { useEstablishContextMutation } from './authApiSlice'
 import { useEffect } from 'react'
 import { Box } from '@mui/material'
 
+import MainLayout from '../../pages/Layout'
+
 type Props = {
     children: ReactNode
 }
