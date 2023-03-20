@@ -13,7 +13,7 @@ export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 export type Order = 'asc' | 'desc'
 
 //** It needs to be any because this function will be used for shifts, users, etc. */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 export function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key
