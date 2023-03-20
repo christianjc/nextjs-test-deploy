@@ -54,7 +54,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
           const { user, house } = result.data
           dispatch(setCredentials({ user, house }))
           // return { data: arg }
-        } catch ({error}) {
+        } catch (error) {
           console.log("Error: ",  error)
           
         } 
