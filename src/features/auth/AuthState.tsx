@@ -18,6 +18,7 @@ export const AuthState = ({ children }: Props) => {
 
     useEffect(() => {
         console.log('*****AuthState Component ran')
+
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 console.log('[AuthState]: Authorized User: ' + user)
@@ -38,19 +39,17 @@ export const AuthState = ({ children }: Props) => {
         console.log('[AuthState]: authUser: ', authUser)
     }, [authUser, isSuccess])
 
+    let content = null
     if (isLoading) {
-        return <Box> Loading...</Box>
+        content = <Box> Loading...</Box>
     } else if (isError) {
         console.log(error)
-        return <Box>There was an Error </Box>
+        content = <Box>There was an Error </Box>
     } else if (isSuccess) {
-        return <React.Fragment>{authUser ? children : null}</React.Fragment>
+        content = <React.Fragment>{authUser ? children : null}</React.Fragment>
     } else {
-        return (
-            <>
-                <Box>{children}</Box>
-                {/* <React.Fragment>{children}</React.Fragment> */}
-            </>
-        )
+        content = <React.Fragment>{children}</React.Fragment>
     }
+
+    return content
 }

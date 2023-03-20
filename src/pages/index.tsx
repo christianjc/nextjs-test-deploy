@@ -5,7 +5,8 @@ export default function Home() {
 
     useEffect(() => {
         // Check if the user is logged in
-        router.push('/account')
+        console.log('Home Component')
+        // router.push('/account')
     }, [])
     return <></>
 }
